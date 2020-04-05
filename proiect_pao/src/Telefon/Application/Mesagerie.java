@@ -16,7 +16,7 @@ public class Mesagerie extends Meniu
         int maxMessages = x.nextInt();
         this.SetMaxIndex(maxMessages);
         lenght = new int[maxMessages];
-        Messages = new String[maxMessages][maxMessages];
+        Messages = new String[maxMessages][maxMessages + 1];
     }
 
     public Mesagerie(int iMax)
@@ -24,13 +24,13 @@ public class Mesagerie extends Meniu
         super(iMax);
         this.SetMaxIndex(iMax);
         lenght = new int[iMax];
-        Messages = new String[iMax][iMax];
+        Messages = new String[iMax][iMax + 1];
     }
 
     public boolean SendMessage(String mesaj,String nume)
     {
 
-     if(iSelected_index + 1 == this.iMax_Index)
+     if(iSelected_index == this.iMax_Index)
      {
          System.out.println("Numarul maxim de persoane a fost atins!");
          return false;
@@ -40,8 +40,10 @@ public class Mesagerie extends Meniu
 
         if (Messages[i][0].equals(nume))
         {
-            if(lenght[i] + 1 == this.iMax_Index)
+            if(lenght[i] == this.iMax_Index) {
+                System.out.println("Numarul maxim de mesaje a fost atins!");
                 return false;
+            }
             Messages[i][lenght[i]] = mesaj;
             lenght[i]++;
             return true;

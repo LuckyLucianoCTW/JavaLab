@@ -31,6 +31,8 @@ public class PlayList extends Meniu
 
     public boolean AddSong(String Song, String Artist, String ReleaseDate)
     {
+        if(iSelected_index  == iMax_Index)
+            return false;
         for(int i = 0 ; i < iSelected_index; i++)
             if(Song.equals(this.Song[i]) && Artist.equals(this.Artist[i]) && ReleaseDate.equals(this.ReleaseDate[i]))
                 return false;
@@ -102,7 +104,7 @@ public class PlayList extends Meniu
             if(AddSong(My_Song,My_Artist,Release_Date))
                 System.out.println("Melodia a fost adaugata in PlayList");
             else
-                System.out.println("Melodia exista deja in playlist");
+                System.out.println("Melodia exista deja in playlist sau nu mai este loc.");
         }
         else if(this.iState == 3)
         {

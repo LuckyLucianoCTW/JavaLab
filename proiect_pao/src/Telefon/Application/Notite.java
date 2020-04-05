@@ -28,7 +28,6 @@ public class Notite extends Meniu
     {
         if(iSelected_index < iMax_Index)
         {
-
             System.out.println("Notita adaugata cu succes!");
             notite[iSelected_index] = Text;
             iSelected_index++;

@@ -26,7 +26,7 @@ public class Agenda extends Meniu
     }
     protected void AddToMyAgenda(String name, String number)
     {
-        if(iSelected_index >= this.iMax_Index)
+        if(iSelected_index == this.iMax_Index)
             System.out.println("Nu mai puteti adauga in agenda!");
         else
             {

@@ -47,7 +47,8 @@ public class WIFI extends Meniu
 
     public void AddNewWIFIConnection(String nume, String parola, String Enc_Method, int Latency)
     {
-        if(Latency > 5 && Latency < 1) {
+        if(Latency > 5 && Latency < 1)
+        {
             System.out.println("Latenta nu se incadreaza intre minimul de 1 si maximul 5");
         return;
         }
@@ -59,7 +60,7 @@ public class WIFI extends Meniu
                 return;
             }
         }
-        if(iSelected_index + 1 < iMax_Index && Latency > 0)
+        if(iSelected_index < iMax_Index)
         {
         Nume_Retea[iSelected_index] = nume;
         Parola[iSelected_index] = parola;
@@ -67,6 +68,8 @@ public class WIFI extends Meniu
         this.Latency[iSelected_index] = Latency;
         iSelected_index++;
         }
+        else
+            System.out.println("Numarul maxim de retele a fost atins!");
     }
 
     public boolean RemoveWIFIConnection(int x)
