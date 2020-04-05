@@ -104,6 +104,12 @@ public class Agenda extends Meniu
         }
         else if(iState == 3)
         {
+
+            if(iSelected_index == 0)
+            {
+                System.out.println("Nu aveti nicio persoana in agenda!");
+                return false;
+            }
             System.out.print("Nume : ");
             String numele = x.nextLine();
             if(RemoveFromMyAgenda(numele))

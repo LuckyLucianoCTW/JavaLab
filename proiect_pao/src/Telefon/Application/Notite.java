@@ -90,6 +90,12 @@ public class Notite extends Meniu
         }
         else if(iState == 3)
         {
+
+            if(iSelected_index == 0)
+            {
+                System.out.println("Nu aveti nicio notita!");
+                return false;
+            }
             int ID;
             System.out.print("Introduceti un numar[inclusiv] intre 1 si " + iSelected_index + " : ");
             ID = x.nextInt();

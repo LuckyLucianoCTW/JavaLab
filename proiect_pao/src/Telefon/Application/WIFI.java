@@ -222,7 +222,11 @@ public class WIFI extends Meniu
         }
         else if(iState == 5)
         {
-
+            if(iSelected_index == 0)
+            {
+                System.out.println("Nu exista retele de sters.");
+                return false;
+            }
             Scanner xz = new Scanner(System.in);
             int reteaua = 0;
             System.out.println(this.toString());

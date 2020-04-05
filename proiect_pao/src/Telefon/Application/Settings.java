@@ -126,7 +126,7 @@ public class Settings extends Meniu
         System.out.print("\n");
         while(iState < 1 || iState > 4)
         {
-            System.out.print("Numarul introdus este unul invalid, va rugam sa introduceti un numar intre 1 si 5 : ");
+            System.out.print("Numarul introdus este unul invalid, va rugam sa introduceti un numar intre 1 si 4 : ");
             this.iState = x.nextInt();
         }
         x.nextLine();

@@ -107,6 +107,11 @@ public class PlayList extends Meniu
         else if(this.iState == 3)
         {
 
+            if(iSelected_index == 0)
+            {
+                System.out.println("Nu aveti nicio melodie in playlist!");
+                return false;
+            }
             int my_Song;
             System.out.println(this.toString());
             System.out.print("Alegeti un numar : ");

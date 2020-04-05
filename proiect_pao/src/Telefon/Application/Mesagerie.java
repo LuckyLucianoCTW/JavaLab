@@ -137,6 +137,12 @@ public class Mesagerie extends Meniu
         }
         else if(iState == 3)
         {
+
+            if(iSelected_index == 0)
+            {
+                System.out.println("Nu aveti niciun mesaj.");
+                return false;
+            }
             String my_Name;
             System.out.print("Numele persoanei : ");
             my_Name = x.nextLine();
