@@ -45,9 +45,39 @@ public class WIFI extends Meniu
     }
 
 
+
+    void SortArray()
+    {
+
+        String sort_Retea;
+        int sort_Latency;
+        String sort_Encryp_Method;
+        String sort_Parola;
+        for(int i = 0 ; i < iSelected_index; i++)
+            for(int j = i + 1; j < iSelected_index; j++)
+            {
+                if(Latency[i] < Latency[j])
+                {
+                    sort_Retea = Nume_Retea[i];
+                    sort_Latency = Latency[i];
+                    sort_Encryp_Method = Encryp_Method[i];
+                    sort_Parola = Parola[i];
+
+                    Latency[i] = Latency[j];
+                    Nume_Retea[i] = Nume_Retea[j];
+                    Encryp_Method[i] = Encryp_Method[j];
+                    Parola[i] = Parola[j];
+                    Latency[j] = sort_Latency;
+                    Nume_Retea[j] = sort_Retea;
+                    Encryp_Method[j] = sort_Encryp_Method;
+                    Parola[j] = sort_Parola;
+                }
+            }
+    }
+
     public void AddNewWIFIConnection(String nume, String parola, String Enc_Method, int Latency)
     {
-        if(Latency > 5 && Latency < 1)
+        if(Latency > 5 || Latency < 1)
         {
             System.out.println("Latenta nu se incadreaza intre minimul de 1 si maximul 5");
         return;
@@ -67,6 +97,7 @@ public class WIFI extends Meniu
         Encryp_Method[iSelected_index] = Enc_Method;
         this.Latency[iSelected_index] = Latency;
         iSelected_index++;
+        SortArray();
         }
         else
             System.out.println("Numarul maxim de retele a fost atins!");
@@ -77,7 +108,7 @@ public class WIFI extends Meniu
 
         if(x >= 0 && x < iSelected_index) {
 
-            if(Nume_Retea[x] == cur_Nume_Retea && Parola[x] == cur_Parola && cur_Latency == Latency[x] && cur_Encryp_Method == Encryp_Method[x])
+            if(Nume_Retea[x].equals(cur_Nume_Retea) && Parola[x].equals(cur_Parola) && cur_Latency == Latency[x] && cur_Encryp_Method.equals(Encryp_Method[x]))
                 this.ClearCurrentWIFIConnection();
 
 
