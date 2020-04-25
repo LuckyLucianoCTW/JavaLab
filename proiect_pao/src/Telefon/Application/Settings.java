@@ -1,9 +1,12 @@
 package Telefon.Application;
 
+import Telefon.Files.CSV;
 import Telefon.Meniu;
 
 import java.awt.desktop.ScreenSleepEvent;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 
 public class Settings extends Meniu
@@ -19,6 +22,8 @@ public class Settings extends Meniu
     String Memorie_Interna;
     String Memorie_RAM;
     String Updates[];
+    CSV<Settings>ReadFromFile;
+
     public Settings(String Denumire, String Versiune, String ReleaseDate, String OS, String Procesor, float GHZ, String Memorie_Interna,String Memorie_RAM, int Max_Updates)
     {
         super(Max_Updates);
@@ -32,6 +37,7 @@ public class Settings extends Meniu
         this.Memorie_Interna = Memorie_Interna;
         this.Memorie_RAM = Memorie_RAM;
         Updates = new String[Max_Updates];
+        ReadFromFile = new CSV<Settings>(this,"src/Telefon/Application/Settings.csv");
     }
 
     public void OverClockOurCPU()
@@ -54,11 +60,29 @@ public class Settings extends Meniu
         GHZ = new_GHZ;
     }
 
-
-    public void AddUpdate(String UpdateName)
+    public List GetList()
     {
+        List<String> a = new Vector();
+        for(int i = 0 ; i < iSelected_index; i++)
+        {
+            a.add(Updates[i]);
+        }
+        return a;
+    }
+    public void AddUpdate(String UpdateName, boolean fromFile)
+    {
+        boolean exists = false;
+        for(int i = 0 ; i < iSelected_index ; i++) {
+            if(Updates[i].equals(UpdateName))
+                exists = true;
+        }
+        if(!exists)
+        {
         Updates[iSelected_index] = UpdateName;
         iSelected_index++;
+        if(!fromFile)
+            ReadFromFile.WriteFile(this,1);
+        }
     }
     public void UpdateMyPhone()
     {

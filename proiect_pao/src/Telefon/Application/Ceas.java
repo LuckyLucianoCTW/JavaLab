@@ -3,14 +3,19 @@ package Telefon.Application;
 import Telefon.Meniu;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Ceas extends Meniu {
     int ceas[];
     int Alarm[];
     boolean ActivateAlarm;
     double tickcount;
-
+    public List GetList()
+    {
+        return  null;
+    }
     public void setTick(double tick)
     {
         this.tickcount = tick;

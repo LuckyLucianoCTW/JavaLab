@@ -1,8 +1,11 @@
 package Telefon.Application;
 
+import Telefon.Files.CSV;
 import Telefon.Meniu;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class WIFI extends Meniu
 {
@@ -18,6 +21,20 @@ public class WIFI extends Meniu
     int cur_Latency;
     String cur_Encryp_Method;
     String cur_Parola;
+    CSV<WIFI>ReadFromFile;
+    public List GetList()
+    {
+        List a = new Vector();
+        for(int i = 0 ; i < iSelected_index; i++)
+        {
+
+            a.add(Nume_Retea[i]);
+            a.add(Parola[i]);
+            a.add(Encryp_Method[i]);
+            a.add(Latency[i]);
+        }
+        return a;
+    }
     public WIFI()
     {
         Scanner x = new Scanner(System.in);
@@ -31,6 +48,8 @@ public class WIFI extends Meniu
         Parola = new String[iMax];
         cur_Nume_Retea = null;
         cur_Latency = 0;
+        ReadFromFile = new CSV<WIFI>(this,"src/Telefon/Application/WIFI.csv");
+
     }
 
     public WIFI(int iMax)
@@ -42,6 +61,7 @@ public class WIFI extends Meniu
         Parola = new String[iMax];
         cur_Nume_Retea = null;
         cur_Latency = 0;
+        ReadFromFile = new CSV<WIFI>(this,"src/Telefon/Application/WIFI.csv");
     }
 
 
@@ -75,10 +95,11 @@ public class WIFI extends Meniu
             }
     }
 
-    public void AddNewWIFIConnection(String nume, String parola, String Enc_Method, int Latency)
+    public void AddNewWIFIConnection(String nume, String parola, String Enc_Method, int Latency, boolean FromFile)
     {
         if(Latency > 5 || Latency < 1)
         {
+            if(!FromFile)
             System.out.println("Latenta nu se incadreaza intre minimul de 1 si maximul 5");
         return;
         }
@@ -86,7 +107,8 @@ public class WIFI extends Meniu
         {
             if(nume == Nume_Retea[i])
             {
-                System.out.println("Conexiunea exista deja");
+                if(!FromFile)
+                    System.out.println("Conexiunea exista deja");
                 return;
             }
         }
@@ -98,9 +120,13 @@ public class WIFI extends Meniu
         this.Latency[iSelected_index] = Latency;
         iSelected_index++;
         SortArray();
+        if(!FromFile)
+            ReadFromFile.WriteFile(this,4);
         }
-        else
-            System.out.println("Numarul maxim de retele a fost atins!");
+        else {
+            if(!FromFile)
+              System.out.println("Numarul maxim de retele a fost atins!");
+        }
     }
 
     public boolean RemoveWIFIConnection(int x)
@@ -227,7 +253,7 @@ public class WIFI extends Meniu
             Encrypted_retea = xz.nextLine();
             System.out.print("Latenta Retelei : ");
             Latency_retea = xz.nextInt();
-            AddNewWIFIConnection(nume_retea,Parola_retea,Encrypted_retea,Latency_retea);
+            AddNewWIFIConnection(nume_retea,Parola_retea,Encrypted_retea,Latency_retea,false);
         }
         else if(iState == 2)
         {

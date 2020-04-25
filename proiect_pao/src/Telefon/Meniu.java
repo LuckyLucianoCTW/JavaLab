@@ -1,5 +1,6 @@
 package Telefon;
 
+import java.util.List;
 import java.util.Scanner;
 
 public abstract class Meniu
@@ -23,6 +24,7 @@ public abstract class Meniu
         iMax_Index = x;
     }
     public abstract boolean ControlPanel();
+    public abstract List GetList();
     public void scanIndex()
     {
         Scanner scan = new Scanner(System.in);

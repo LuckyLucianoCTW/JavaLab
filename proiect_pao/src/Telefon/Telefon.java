@@ -27,7 +27,7 @@ public class Telefon {
         PlayList my_Playlist = new PlayList(100);
         Settings my_Settings = new Settings("Samsung","A70","21.12.2018","Android 3.0","Ryzen",3.0f,"32GB","4GB",100);
         WIFI my_WIFI = new WIFI(100);
-        my_Settings.AddUpdate("Android 3.5");
+        my_Settings.AddUpdate("Android 3.5",false);
         Functii_Telefon[0] = my_Agenda;
         Functii_Telefon[1] = my_Clock;
         Functii_Telefon[2] = my_Messages;

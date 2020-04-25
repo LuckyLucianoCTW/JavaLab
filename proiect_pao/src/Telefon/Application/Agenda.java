@@ -1,14 +1,18 @@
 package Telefon.Application;
 
 import Telefon.Meniu;
+import Telefon.Files.CSV;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Agenda extends Meniu
 {
     String nume[];
     String number[];
+    CSV<Agenda>ReadFromFile;
     public Agenda()
     {
         System.out.print("Nr max de persoane : ");
@@ -17,29 +21,49 @@ public class Agenda extends Meniu
         this.SetMaxIndex(iMax);
         nume = new String[iMax];
         number = new String[iMax];
+        ReadFromFile = new CSV<Agenda>(this,"src/Telefon/Application/Agenda.csv");
     }
     public Agenda(int x)
     {
+
         super(x);
         nume = new String[x];
         number = new String[x];
+        ReadFromFile = new CSV<Agenda>(this,"src/Telefon/Application/Agenda.csv");
     }
-    protected void AddToMyAgenda(String name, String number)
+    public List GetList()
     {
-        if(iSelected_index == this.iMax_Index)
-            System.out.println("Nu mai puteti adauga in agenda!");
+     List<String> a = new Vector();
+     for(int i = 0 ; i < iSelected_index; i++)
+     {
+         a.add(nume[i]);
+         a.add(number[i]);
+     }
+     return a;
+    }
+    public void AddToMyAgenda(String name, String number, boolean IsFromFile)
+    {
+        if(iSelected_index == this.iMax_Index) {
+            if (!IsFromFile)
+                System.out.println("Nu mai puteti adauga in agenda!");
+        }
         else
             {
                 for(int i = 0 ; i < iSelected_index; i++) {
                     if (this.number[i].equals(number) && this.nume[i].equals(name)) {
-                        System.out.println("Acest numar exista deja in agenda dumneavoastra!");
+                        if(!IsFromFile)
+                         System.out.println("Acest numar exista deja in agenda dumneavoastra!");
                         return;
                     }
                 }
             this.nume[iSelected_index] = name;
             this.number[iSelected_index] = number;
             iSelected_index++;
-            System.out.print("Numarul a fost adaugat cu succes!\n");
+            if(!IsFromFile)
+            {
+                ReadFromFile.WriteFile(this,2);
+                System.out.print("Numarul a fost adaugat cu succes!\n");
+            }
         }
     }
     protected boolean RemoveFromMyAgenda(String name)
@@ -58,7 +82,6 @@ public class Agenda extends Meniu
         }
         return false;
     }
-
     @Override
     public String toString() {
         /*return "Agenda are" +
@@ -100,7 +123,7 @@ public class Agenda extends Meniu
             String numele = x.nextLine();
             System.out.print("Numarul de telefon : ");
             String numar = x.nextLine();
-            AddToMyAgenda(numele,numar);
+            AddToMyAgenda(numele,numar,false);
         }
         else if(iState == 3)
         {
@@ -124,5 +147,3 @@ public class Agenda extends Meniu
         return false;
     }
 }
-
-//sortare agenda alfabetic punctu b

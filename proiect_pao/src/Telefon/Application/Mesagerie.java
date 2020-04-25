@@ -3,7 +3,9 @@ package Telefon.Application;
 import Telefon.Meniu;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Mesagerie extends Meniu
 {
@@ -55,7 +57,10 @@ public class Mesagerie extends Meniu
         iSelected_index++;
         return true;
     }
-
+    public List GetList()
+    {
+        return  null;
+    }
     public boolean DeleteMessagesWithSomeone(String nume)
     {
         for(int i = 0 ; i < iSelected_index; i++)

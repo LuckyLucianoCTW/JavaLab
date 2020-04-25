@@ -1,13 +1,17 @@
 package Telefon.Application;
 
+import Telefon.Files.CSV;
 import Telefon.Meniu;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class Notite extends Meniu
 {
 
     String notite[];
+    CSV<Notite> ReadFromFile;
     public Notite()
     {
         System.out.print("Numarul maxim de notite : ");
@@ -15,6 +19,8 @@ public class Notite extends Meniu
         int maxNotite = x.nextInt();
         notite = new String[maxNotite];
         this.SetMaxIndex(maxNotite);
+        ReadFromFile = new CSV<Notite>(this,"src/Telefon/Application/Notite.csv");
+        Notite a = ReadFromFile.ReadFile();
     }
 
     public Notite(int x)
@@ -22,20 +28,35 @@ public class Notite extends Meniu
         super(x);
         notite = new String[x];
         this.SetMaxIndex(x);
+        ReadFromFile = new CSV<Notite>(this,"src/Telefon/Application/Notite.csv");
     }
 
-    public void AddNotite(String Text)
+    public void AddNotite(String Text, boolean fromFile)
     {
         if(iSelected_index < iMax_Index)
         {
-            System.out.println("Notita adaugata cu succes!");
             notite[iSelected_index] = Text;
             iSelected_index++;
+            if(!fromFile)
+            {
+                ReadFromFile.WriteFile(this,1);
+                System.out.println("Notita adaugata cu succes!");
+            }
         }
-        else
-            System.out.println("Ai atins numarul maxim de notite");
+        else {
+            if (!fromFile)
+                System.out.println("Ai atins numarul maxim de notite");
+        }
     }
-
+    public List GetList()
+    {
+        List<String> a = new Vector();
+        for(int i = 0 ; i < iSelected_index; i++)
+        {
+            a.add(notite[i]);
+        }
+        return a;
+    }
     public boolean RemoveNotite(int x)
     {
         x -= 1;
@@ -85,7 +106,7 @@ public class Notite extends Meniu
             String text;
             System.out.print("Text : ");
             text = x.nextLine();
-            AddNotite(text);
+            AddNotite(text,false);
         }
         else if(iState == 3)
         {

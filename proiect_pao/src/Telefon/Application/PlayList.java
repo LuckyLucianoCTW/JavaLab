@@ -1,14 +1,29 @@
 package Telefon.Application;
 
+import Telefon.Files.CSV;
 import Telefon.Meniu;
 
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class PlayList extends Meniu
 {
     String Song[];
     String Artist[];
     String ReleaseDate[];
+    CSV<PlayList>ReadFromFile;
+    public List GetList()
+    {
+        List<String> a = new Vector();
+        for(int i = 0 ; i < iSelected_index; i++)
+        {
+            a.add(Song[i]);
+            a.add(Artist[i]);
+            a.add(ReleaseDate[i]);
+        }
+        return a;
+    }
     public PlayList()
     {
         System.out.print("Numarul maxim de melodii : ");
@@ -18,6 +33,7 @@ public class PlayList extends Meniu
         Song = new String[iMax];
         Artist = new String[iMax];
         ReleaseDate = new String[iMax];
+        ReadFromFile = new CSV<PlayList>(this,"src/Telefon/Application/PlayList.csv");
     }
     public PlayList(int x)
     {
@@ -27,9 +43,10 @@ public class PlayList extends Meniu
         Song = new String[x];
         Artist = new String[x];
         ReleaseDate = new String[x];
+        ReadFromFile = new CSV<PlayList>(this,"src/Telefon/Application/PlayList.csv");
     }
 
-    public boolean AddSong(String Song, String Artist, String ReleaseDate)
+    public boolean AddSong(String Song, String Artist, String ReleaseDate, boolean fromFile)
     {
         if(iSelected_index  == iMax_Index)
             return false;
@@ -40,6 +57,8 @@ public class PlayList extends Meniu
         this.Artist[iSelected_index] = Artist;
         this.ReleaseDate[iSelected_index] = ReleaseDate;
         iSelected_index++;
+        if(!fromFile)
+            ReadFromFile.WriteFile(this,3);
         return true;
     }
 
@@ -101,7 +120,7 @@ public class PlayList extends Meniu
             My_Artist = x.nextLine();
             System.out.print("Data Lansarii Melodiei : ");
             Release_Date = x.nextLine();
-            if(AddSong(My_Song,My_Artist,Release_Date))
+            if(AddSong(My_Song,My_Artist,Release_Date,false))
                 System.out.println("Melodia a fost adaugata in PlayList");
             else
                 System.out.println("Melodia exista deja in playlist sau nu mai este loc.");
