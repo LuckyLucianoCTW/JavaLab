@@ -107,6 +107,7 @@ public class PlayList extends Meniu
         x.nextLine();
         if(this.iState == 1)
         {
+            this.ReadFromFile.AuditSystem("Afisare PlayList");
             System.out.println(this.toString());
         }
         else if(this.iState == 2)
@@ -120,6 +121,7 @@ public class PlayList extends Meniu
             My_Artist = x.nextLine();
             System.out.print("Data Lansarii Melodiei : ");
             Release_Date = x.nextLine();
+            this.ReadFromFile.AuditSystem("Adaugarea unei melodii in PlayList");
             if(AddSong(My_Song,My_Artist,Release_Date,false))
                 System.out.println("Melodia a fost adaugata in PlayList");
             else
@@ -138,6 +140,7 @@ public class PlayList extends Meniu
             System.out.print("Alegeti un numar : ");
             my_Song = x.nextInt();
             my_Song--;
+            this.ReadFromFile.AuditSystem("Stergerea din PlayList");
             if(RemoveSong(my_Song))
                 System.out.println("Melodia a fost stearsa din PlayList");
             else
@@ -145,6 +148,7 @@ public class PlayList extends Meniu
         }
         else if(this.iState == 4)
         {
+            this.ReadFromFile.AuditSystem("Inapoi in Meniu");
             return true;
         }
         return false;

@@ -99,14 +99,17 @@ public class Notite extends Meniu
             this.iState = x.nextInt();
         }
         x.nextLine();
-        if(iState == 1)
+        if(iState == 1) {
+            this.ReadFromFile.AuditSystem("Vizualizare Notite");
             System.out.println(toString());
+        }
         else if(iState == 2)
         {
             String text;
             System.out.print("Text : ");
             text = x.nextLine();
             AddNotite(text,false);
+            this.ReadFromFile.AuditSystem("Adaugarea unei Notite");
         }
         else if(iState == 3)
         {
@@ -119,13 +122,16 @@ public class Notite extends Meniu
             int ID;
             System.out.print("Introduceti un numar[inclusiv] intre 1 si " + iSelected_index + " : ");
             ID = x.nextInt();
+            this.ReadFromFile.AuditSystem("Stergerea unei notite");
             if(RemoveNotite(ID))
                 System.out.println("Notita a fost stearsa cu succes!");
             else
                 System.out.println("Numarul introdus a fost invalid!");
         }
-        else if(iState == 4)
+        else if(iState == 4) {
+            this.ReadFromFile.AuditSystem("Inapoi in Meniu");
             return true;
+        }
         return false;
     }
 }

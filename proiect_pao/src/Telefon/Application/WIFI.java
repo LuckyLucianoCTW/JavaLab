@@ -253,6 +253,7 @@ public class WIFI extends Meniu
             Encrypted_retea = xz.nextLine();
             System.out.print("Latenta Retelei : ");
             Latency_retea = xz.nextInt();
+            this.ReadFromFile.AuditSystem("Adaugare Retea WIFI");
             AddNewWIFIConnection(nume_retea,Parola_retea,Encrypted_retea,Latency_retea,false);
         }
         else if(iState == 2)
@@ -263,18 +264,22 @@ public class WIFI extends Meniu
             System.out.print("Reteaua la care sa va conectati : ");
             reteaua = xz.nextInt();
             reteaua--;
-            if(reteaua >= 0 && reteaua < iSelected_index)
-                if(ConnectToWIFI(reteaua))
+            if(reteaua >= 0 && reteaua < iSelected_index) {
+                this.ReadFromFile.AuditSystem("Conectare la o retea WIFI");
+                if (ConnectToWIFI(reteaua))
                     System.out.println("V-ati conectat cu succes!");
                 else
                     System.out.println("Conectarea a esuat!");
+            }
         }
         else if(iState == 3)
         {
+            this.ReadFromFile.AuditSystem("Afisare retele WIFI");
             System.out.println(this.toString());
         }
         else if(iState == 4)
         {
+            this.ReadFromFile.AuditSystem("Deconectarea dintr-o retea WIFI");
             if(this.ClearCurrentWIFIConnection() == true)
                 System.out.println("Ati fost deconectat cu succes!");
             else
@@ -295,6 +300,7 @@ public class WIFI extends Meniu
             reteaua--;
             if(reteaua >= 0 && reteaua < iSelected_index)
             {
+                this.ReadFromFile.AuditSystem("Stergere retea WIFI");
                 if (this.RemoveWIFIConnection(reteaua) == true)
                     System.out.println("Reteaua selectata a fost stearsa cu succes!");
                 else
@@ -304,6 +310,7 @@ public class WIFI extends Meniu
         }
         else if(iState == 6)
         {
+            this.ReadFromFile.AuditSystem("Inapoi in Meniu");
             return true;
         }
         return false;

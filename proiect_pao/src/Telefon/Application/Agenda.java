@@ -115,6 +115,7 @@ public class Agenda extends Meniu
         x.nextLine();
         if(iState == 1)
         {
+            this.ReadFromFile.AuditSystem("Vizualizare Agenda");
             System.out.println(toString());
         }
         else if(iState == 2)
@@ -123,6 +124,7 @@ public class Agenda extends Meniu
             String numele = x.nextLine();
             System.out.print("Numarul de telefon : ");
             String numar = x.nextLine();
+            this.ReadFromFile.AuditSystem("Adaugare Agenda");
             AddToMyAgenda(numele,numar,false);
         }
         else if(iState == 3)
@@ -135,6 +137,7 @@ public class Agenda extends Meniu
             }
             System.out.print("Nume : ");
             String numele = x.nextLine();
+            this.ReadFromFile.AuditSystem("Stergere din Agenda");
             if(RemoveFromMyAgenda(numele))
                 System.out.println("Persoana a fost stearsa din Agenda!");
             else
@@ -142,6 +145,7 @@ public class Agenda extends Meniu
         }
         else if(iState == 4)
         {
+            this.ReadFromFile.AuditSystem("Inapoi in Meniu");
             return true;
         }
         return false;

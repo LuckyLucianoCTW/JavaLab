@@ -4,8 +4,10 @@ import Telefon.Application.*;
 import Telefon.Meniu;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 public class CSV<T> implements FileInterface<T>
 {
@@ -41,6 +43,7 @@ public class CSV<T> implements FileInterface<T>
                     else if (template instanceof WIFI)
                         ((WIFI)template).AddNewWIFIConnection(text[0],text[1],text[2],Integer.parseInt(text[3]),true);
                 }
+                br.close();
             }
             catch (FileNotFoundException e)
             {
@@ -83,6 +86,39 @@ public class CSV<T> implements FileInterface<T>
             }
         }
         return false;
+    }
+    public void AuditSystem(String Function)
+    {
+        List<String>myStringAudit = new Vector<String>();
+        BufferedReader br = null;
+        String TextInFile = "";
+        try {
+            br = new BufferedReader(new FileReader("src/Telefon/Files/auditLog.csv"));
+            while ((TextInFile = br.readLine()) != null)
+                myStringAudit.add(TextInFile);
+            br.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        File myFile = new File("src/Telefon/Files/auditLog.csv");
+        try
+        {
+            FileWriter outputfile = new FileWriter(myFile);
+            for(int i = 0 ; i < myStringAudit.size(); i++)
+            {
+                outputfile.write(myStringAudit.get(i));
+                outputfile.write(System.lineSeparator());
+            }
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            outputfile.write(Function + " at " + timestamp);
+            outputfile.write(System.lineSeparator());
+            outputfile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

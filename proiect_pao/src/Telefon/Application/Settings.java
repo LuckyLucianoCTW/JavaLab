@@ -156,18 +156,22 @@ public class Settings extends Meniu
         x.nextLine();
         if(iState == 1)
         {
+            this.ReadFromFile.AuditSystem("Afisare detalii telefon");
             System.out.println(this.toString());
         }
         else if(iState == 2)
         {
+            this.ReadFromFile.AuditSystem("CPU Overclock");
             OverClockOurCPU();
         }
         else if(iState == 3)
         {
+            this.ReadFromFile.AuditSystem("Update la sistem");
             UpdateMyPhone();
         }
         else if(iState == 4)
         {
+            this.ReadFromFile.AuditSystem("Inapoi in Meniu");
             return true;
         }
 
