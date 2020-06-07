@@ -17,11 +17,12 @@ public class CSV<T> implements FileInterface<T>
     {
         template = myTemplate;
         this.Path = value;
-        ReadFile();
+        //ReadFile();
     }
     public T ReadFile()
     {
-
+        return null;
+    /*
         String TextInFile = "";
 
 
@@ -54,11 +55,12 @@ public class CSV<T> implements FileInterface<T>
             }
 
             return template;
-
+        */
     }
 
     public boolean WriteFile(T x,int separator)
     {
+        /*
         if(x instanceof Agenda || x instanceof Mesagerie || x instanceof Notite || x instanceof PlayList || x instanceof Settings || x instanceof WIFI)
         {
             Meniu a = (Meniu)x;
@@ -84,7 +86,7 @@ public class CSV<T> implements FileInterface<T>
             {
                 e.printStackTrace();
             }
-        }
+        }*/
         return false;
     }
     public void AuditSystem(String Function)

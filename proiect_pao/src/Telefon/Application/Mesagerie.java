@@ -1,6 +1,7 @@
 package Telefon.Application;
 
 import Telefon.Meniu;
+import Telefon.Render.Render;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,8 +12,9 @@ public class Mesagerie extends Meniu
 {
     String Messages[][];
     int lenght[];
-    public Mesagerie()
+    public Mesagerie(Render rend)
     {
+        super(rend);
         System.out.print("Numarul maxim de persoane/mesaje : ");
         Scanner x = new Scanner(System.in);
         int maxMessages = x.nextInt();
@@ -21,9 +23,10 @@ public class Mesagerie extends Meniu
         Messages = new String[maxMessages][maxMessages + 1];
     }
 
-    public Mesagerie(int iMax)
+    public Mesagerie(int iMax,Render rend)
     {
-        super(iMax);
+
+        super(iMax,rend);
         this.SetMaxIndex(iMax);
         lenght = new int[iMax];
         Messages = new String[iMax][iMax + 1];

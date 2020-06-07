@@ -1,24 +1,33 @@
 package Telefon;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Scanner;
 
+import Telefon.Render.Render;
 public abstract class Meniu
 {
     protected int iState;
     protected int iSelected_index;
     protected int iMax_Index;
-    public Meniu()
+    protected Render Renderer;
+    public Meniu(Render theRender)
     {
+
+        Renderer = theRender;
         iState = 0;
         iSelected_index = 0;
         iMax_Index = 0;
     }
-    public Meniu(int iMax) {
+    public Meniu(int iMax,Render theRender) {
+        Renderer = theRender;
         iState = 0;
         iSelected_index = 0;
         iMax_Index = iMax;
     }
+
     protected  void SetMaxIndex(int x)
     {
         iMax_Index = x;
@@ -30,5 +39,4 @@ public abstract class Meniu
         Scanner scan = new Scanner(System.in);
         iSelected_index = scan.nextInt();
     }
-
 }

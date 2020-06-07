@@ -2,33 +2,53 @@ package Telefon.Application;
 
 import Telefon.Meniu;
 import Telefon.Files.CSV;
+import Telefon.Render.Render;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
-
+import Telefon.DataBase.mySQL;
 public class Agenda extends Meniu
 {
+    boolean isSelected[];
+    String currentListBox[];
     String nume[];
     String number[];
     CSV<Agenda>ReadFromFile;
-    public Agenda()
-    {
+    mySQL<Agenda>ReadFromDB;
+    public Agenda(Render rend) throws SQLException {
+        super(rend);
         System.out.print("Nr max de persoane : ");
         Scanner x = new Scanner(System.in);
         int iMax = x.nextInt();
         this.SetMaxIndex(iMax);
+        isSelected = new boolean[iMax];
+        currentListBox = new String[iMax];
+        for(int i = 0 ; i < iMax ; i++)
+            currentListBox[iMax] = "";
         nume = new String[iMax];
         number = new String[iMax];
+        ReadFromDB = new mySQL<Agenda>(this);
         ReadFromFile = new CSV<Agenda>(this,"src/Telefon/Application/Agenda.csv");
-    }
-    public Agenda(int x)
-    {
 
-        super(x);
+    }
+    public Agenda(int x,Render rend) throws SQLException {
+        super(x,rend);
+        currentListBox = new String[x];
+
+        isSelected = new boolean[x];
+        for(int i = 0 ; i < x ; i++)
+            currentListBox[i] = "";
         nume = new String[x];
         number = new String[x];
+        ReadFromDB = new mySQL<Agenda>(this);
+
         ReadFromFile = new CSV<Agenda>(this,"src/Telefon/Application/Agenda.csv");
     }
     public List GetList()
@@ -41,8 +61,7 @@ public class Agenda extends Meniu
      }
      return a;
     }
-    public void AddToMyAgenda(String name, String number, boolean IsFromFile)
-    {
+    public void AddToMyAgenda(String name, String number, boolean IsFromFile) throws SQLException {
         if(iSelected_index == this.iMax_Index) {
             if (!IsFromFile)
                 System.out.println("Nu mai puteti adauga in agenda!");
@@ -61,13 +80,13 @@ public class Agenda extends Meniu
             iSelected_index++;
             if(!IsFromFile)
             {
-                ReadFromFile.WriteFile(this,2);
+                ReadFromDB.InsertIntoTable(this,2);
+                //ReadFromFile.WriteFile(this,2);
                 System.out.print("Numarul a fost adaugat cu succes!\n");
             }
         }
     }
-    protected boolean RemoveFromMyAgenda(String name)
-    {
+    protected boolean RemoveFromMyAgenda(String name) throws SQLException {
         for(int i = 0; i < iSelected_index; i++)
         {
             if (nume[i].equals(name))
@@ -77,6 +96,7 @@ public class Agenda extends Meniu
                     number[j] = number[j + 1];
                 }
                 iSelected_index--;
+                ReadFromDB.InsertIntoTable(this,2);
                 return true;
             }
         }
@@ -84,21 +104,103 @@ public class Agenda extends Meniu
     }
     @Override
     public String toString() {
-        /*return "Agenda are" +
-                index + " Contacte"  + "\n" +
-                " nume = " + Arrays.toString(nume) + "\n" +
-                " numar = " + Arrays.toString(number);*/
         String my_Agenda = "-------Agenda are " + iSelected_index +  " contacte -------\n";
         for(int i = 0 ; i < iSelected_index; i++)
         {
-            my_Agenda += "Nume : " + nume[i] + "\n" + "Numar : " + number[i] + " \n\n";
+            this.currentListBox[i] = "Nume : " + nume[i] + " ----> " + "Numar : " + number[i];
+            my_Agenda +=  "Nume : " + nume[i] + "\n" + "Numar : " + number[i] + " \n";
         }
         return my_Agenda;
     }
-
-    public boolean ControlPanel()
+    public void UpdateToString()
     {
-        System.out.println("-Agenda-");
+        toString();
+    }
+    public boolean ControlPanel() {
+
+        iState = 0;
+        Renderer.ResetEverything();
+        Renderer.setTitle("-Agenda-");
+        //Renderer.ListBox(0,text_list,-1,50,350,150,true,Color.black);
+        //String textLabel = "<html><br>Testy<br>></html>";
+
+        //Renderer.Button(0,"Press Me",0,0,50,20);
+        //System.out.println("-Agenda-");
+        Renderer.ListBox(iSelected_index, this.currentListBox, -1, -1, 400, 150, true, Color.black);
+        Renderer.Button(0, "Vizualizati Agenda", 5, 200, 150, 20);
+        Renderer.Button(1, "Adaugati o persoana in Agenda", 5 + Renderer.Button[0].getWidth(), 200, 225, 20);
+        Renderer.Button(2, "Stergeti o persoana din Agenda", 5, 225, 225, 20);
+        Renderer.Button(3, "Back to Menu", 5 + Renderer.Button[2].getWidth(), 225, 150, 20);
+        Renderer.Button[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UpdateToString();
+                Renderer.ListBox(iSelected_index, currentListBox, -1, -1, 400, 150, true, Color.black);
+            }
+        });
+        Renderer.Button[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isSelected[0])
+                {
+                    Renderer.InputText(0, "Numele Persoanei", 5, 250, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(1, "Numarul Persoanei", 5, 275, 150, 20, true, Color.white, Color.black);
+                    isSelected[0] = true;
+                } else {
+                    Renderer.textField[0].setVisible(false);
+                    Renderer.textField[1].setVisible(false);
+                    String numele = Renderer.textField[0].getText();
+                    String numar = Renderer.textField[1].getText();
+                    try {
+                        AddToMyAgenda(numele, numar, false);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    isSelected[0] = false;
+                }
+                //Renderer.ListBox(0,currentListBox,-1,-1,400,150,true,Color.black);
+            }
+        });
+        Renderer.Button[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isSelected[1]) {
+                    Renderer.InputText(2, "Numele Persoanei", 5, 250, 150, 20, true, Color.white, Color.black);
+                    isSelected[1] = true;
+                } else {
+                    Renderer.textField[2].setVisible(false);
+                    String numele = Renderer.textField[2].getText();
+
+                    boolean isRemoved = false;
+                    try {
+                        isRemoved = RemoveFromMyAgenda(numele);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    System.out.println("\n" + numele + " " + isRemoved);
+                    isSelected[1] = false;
+                }
+                //Renderer.ListBox(0,currentListBox,-1,-1,400,150,true,Color.black);
+            }
+        });
+        Renderer.Button[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                iState = 4;
+            }
+        });
+        while (true) {
+            try{Thread.sleep(250);}
+            catch(InterruptedException e)
+            {
+                System.out.println(e);
+            }
+            if (iState == 4) {
+
+                this.ReadFromFile.AuditSystem("Inapoi in Meniu");
+                return true;
+            }
+        }/*
         System.out.println("1) Vizualizati Agenda");
         System.out.println("2) Adaugati o persoana in Agenda");
         System.out.println("3) Stergeti o persoana din Agenda");
@@ -149,5 +251,6 @@ public class Agenda extends Meniu
             return true;
         }
         return false;
+    }*/
     }
 }

@@ -2,6 +2,7 @@ package Telefon.Application;
 
 import Telefon.Files.CSV;
 import Telefon.Meniu;
+import Telefon.Render.Render;
 
 import java.util.List;
 import java.util.Scanner;
@@ -35,8 +36,9 @@ public class WIFI extends Meniu
         }
         return a;
     }
-    public WIFI()
+    public WIFI(Render rend)
     {
+        super(rend);
         Scanner x = new Scanner(System.in);
         System.out.print("Numarul maxim de conexiuni : ");
         int iMax = x.nextInt();
@@ -52,9 +54,10 @@ public class WIFI extends Meniu
 
     }
 
-    public WIFI(int iMax)
+    public WIFI(int iMax,Render rend)
     {
-        super(iMax);
+
+        super(iMax,rend);
         Nume_Retea = new String[iMax];
         Latency = new int[iMax];
         Encryp_Method = new String[iMax];

@@ -1,15 +1,21 @@
 package Telefon.Application;
 
 import Telefon.Meniu;
+import Telefon.Render.Render;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Vector;
 
 public class Ceas extends Meniu {
+    boolean isSelected[];
     int ceas[];
     int Alarm[];
+    String currentListBox[];
     boolean ActivateAlarm;
     double tickcount;
     public List GetList()
@@ -84,8 +90,11 @@ public class Ceas extends Meniu {
         }
         this.Alarm[3] += rest;
     }
-    public Ceas(int zi,int ora,int minut)
+    public Ceas(int zi, int ora, int minut, Render rend)
     {
+        super(rend);
+        isSelected = new boolean[10];
+        this.currentListBox = new String[2];
         if(IsAvailable(zi,ora,minut,0)) {
 
             this.ceas = new int[4];
@@ -196,7 +205,9 @@ public class Ceas extends Meniu {
             ora = "0" + this.ceas[2];
         else
             ora = "" + this.ceas[2];
-        String ceas = "Ziua : " + this.ceas[3] + " --- " + ora + ":" + minutu + ":" + Secunda + "\n";
+        String ceas =  "Ziua : " + this.ceas[3] + " --- " + ora + ":" + minutu + ":" + Secunda + "\n";
+        iSelected_index = 1;
+        currentListBox[0] = "Ceasul -> " + "Ziua : " + this.ceas[3] + " --- " + ora + ":" + minutu + ":" + Secunda;
         if(ActivateAlarm)
         {
             ceas += "Aveti o alarma activata!\n";
@@ -213,16 +224,120 @@ public class Ceas extends Meniu {
             else
                 ora = "" + this.Alarm[2];
             ceas += "Ziua : " + this.Alarm[3] + " --- " + ora + ":" + minutu + ":" + Secunda + "\n";
+            currentListBox[1] = "Alarma -> " +"Ziua : " + this.Alarm[3] + " --- " + ora + ":" + minutu + ":" + Secunda;
+            iSelected_index = 2;
         }
         else
             ceas+= "Nu aveti o alarma setata!\n";
         return ceas;
     }
-
+    void UpdateString()
+    {
+        toString();
+    }
     public boolean ControlPanel()
     {
         tickcount =  System.currentTimeMillis();
-        System.out.println("-Ceas-");
+        iState = -1;
+        Renderer.ResetEverything();
+        Renderer.setTitle("-Ceas-");
+        Renderer.ListBox(iSelected_index, this.currentListBox, -1, -1, 400, 150, true, Color.black);
+        Renderer.Button(0, "Afisati ora si Alarma", 45, 200, 150, 20);
+        Renderer.Button(1, "Setati Alarma", 45 + Renderer.Button[0].getWidth(), 200, 150, 20);
+        Renderer.Button(2, "Setati ora si ziua", 45, 225, 150, 20);
+        Renderer.Button(3, "Stergeti Alarma", 45 + Renderer.Button[2].getWidth(), 225, 150, 20);
+        Renderer.Button(4, "Back to menu", 45, 250, (Renderer.Button[3].getWidth() + Renderer.Button[2].getWidth()), 20);
+        Renderer.Button[0].addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            UpdateString();
+            Renderer.ListBox(iSelected_index, currentListBox, -1, -1, 400, 150, true, Color.black);
+        }
+        });
+        Renderer.Button[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isSelected[0])
+                {
+                    Renderer.InputText(0, "Ziua Alarmei", 5, 275, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(1, "Ora Alarmei", 5, 295, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(2, "Minut Alarmei", 5, 315, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(3, "Secunda Alarmei", 5, 335, 150, 20, true, Color.white, Color.black);
+                    isSelected[0] = true;
+                } else {
+                    int ziua = Integer.parseInt(Renderer.textField[0].getText());
+                    int ora = Integer.parseInt(Renderer.textField[1].getText());
+                    int minutu = Integer.parseInt(Renderer.textField[2].getText());
+                    int secunda = Integer.parseInt(Renderer.textField[3].getText());
+                    if(IsAvailable(ziua,ora,minutu,secunda))
+                    {
+                        Alarm(ziua,ora,minutu,secunda);
+                        ConvertAlarm();
+                        Renderer.textField[0].setVisible(false);
+                        Renderer.textField[1].setVisible(false);
+                        Renderer.textField[2].setVisible(false);
+                        Renderer.textField[3].setVisible(false);
+                        isSelected[0] = false;
+                    }
+                    //
+                }
+            }
+        });
+        Renderer.Button[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!isSelected[1])
+                {
+                    Renderer.InputText(0, "Ziua", 5, 275, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(1, "Ora", 5, 295, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(2, "Minut", 5, 315, 150, 20, true, Color.white, Color.black);
+                    Renderer.InputText(3, "Secunda", 5, 335, 150, 20, true, Color.white, Color.black);
+                    isSelected[1] = true;
+                } else {
+                    int ziua = Integer.parseInt(Renderer.textField[0].getText());
+                    int ora = Integer.parseInt(Renderer.textField[1].getText());
+                    int minutu = Integer.parseInt(Renderer.textField[2].getText());
+                    int secunda = Integer.parseInt(Renderer.textField[3].getText());
+                    if(IsAvailable(ziua,ora,minutu,secunda))
+                    {
+                        ceas[0] = secunda;
+                        ceas[1] = minutu;
+                        ceas[2] = ora;
+                        ceas[3] = ziua;
+                        ConvertCeas();
+                        Renderer.textField[0].setVisible(false);
+                        Renderer.textField[1].setVisible(false);
+                        Renderer.textField[2].setVisible(false);
+                        Renderer.textField[3].setVisible(false);
+                        isSelected[1] = false;
+                    }
+                    //
+                }
+            }
+        });
+        Renderer.Button[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            RemoveAlarm();
+            }
+        });
+        Renderer.Button[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            iState = 4;
+            }
+        });
+        while (true) {
+            try{Thread.sleep(250);}
+            catch(InterruptedException e)
+            {
+                System.out.println(e);
+            }
+            if (iState == 4) {
+                return true;
+            }
+        }
+        /*
         System.out.println("1) Afisati ora si Alarma");
         System.out.println("2) Setati Alarma");
         System.out.println("3) Setati ora si ziua");
@@ -294,6 +409,7 @@ public class Ceas extends Meniu {
             return true;
         }
         return false;
+        */
     }
 
 }
