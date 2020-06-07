@@ -104,7 +104,7 @@ public class Settings extends Meniu
     {
 
         if(iSelected_index == 0) {
-        System.out.print("Telefonul nu are niciun update disponibil \n");
+        //System.out.print("Telefonul nu are niciun update disponibil \n");
         return;
         }
         OS = Updates[0];
@@ -117,7 +117,7 @@ public class Settings extends Meniu
             Renderer.Label[2].setVisible(false);
             Renderer.Label(0,"Telefonul se updateaza... ",5, 250, 150, 20, true, Color.white, Color.black);
             Renderer.Label(1,toShow,5, 275, 150, 20, true, Color.white, Color.black);
-            System.out.print("|");
+            //System.out.print("|");
             int x = 0;
             while (x != 100)
             {
@@ -129,7 +129,7 @@ public class Settings extends Meniu
                     System.out.println(e);
                 }
                 if (x % 10 == 0) {
-                    System.out.print("=");
+                    //System.out.print("=");
                     toShow+= "=";
                     Renderer.Label(1,toShow,5, 275, 150, 20, true, Color.white, Color.black);
                 }
@@ -177,10 +177,6 @@ public class Settings extends Meniu
         Renderer.setTitle("-Settings-");
         //Renderer.ListBox(0,text_list,-1,50,350,150,true,Color.black);
         //String textLabel = "<html><br>Testy<br>></html>";
-        System.out.println("1) Despre Telefon");
-        System.out.println("2) OverClock CPU");
-        System.out.println("3) Updateaza-ti Telefonul");
-        System.out.println("4) Back to Menu");
         //Renderer.Button(0,"Press Me",0,0,50,20);
         //System.out.println("-Agenda-");
         Renderer.ListBox(7 +iSelected_index, this.currentListBox, -1, -1, 400, 150, true, Color.black);

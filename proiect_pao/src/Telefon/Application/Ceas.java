@@ -120,13 +120,8 @@ public class Ceas extends Meniu {
     public void RemoveAlarm()
     {
         if(ActivateAlarm)
-        {
-
-            System.out.println("Alarma a fost stearsa cu succes!");
             ActivateAlarm = false;
-        }
-        else
-            System.out.println("Nu aveti o alarma setata!");
+
     }
     public void ActivateOurAlarm()
     {
@@ -153,7 +148,7 @@ public class Ceas extends Meniu {
             {
                 System.out.println(e);
             }
-            System.out.print("ALARMA D-VOASTRA DE LA ORA : " + ceas + "\n");
+            //System.out.print("ALARMA D-VOASTRA DE LA ORA : " + ceas + "\n");
         }
         UpdateOurClock();
     }

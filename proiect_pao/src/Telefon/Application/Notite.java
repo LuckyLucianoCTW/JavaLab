@@ -59,12 +59,8 @@ public class Notite extends Meniu
             {
                 ReadFromFile.WriteFile(this,1);
                 ReadFromDB.InsertIntoTable(this,1);
-                System.out.println("Notita adaugata cu succes!");
+                //System.out.println("Notita adaugata cu succes!");
             }
-        }
-        else {
-            if (!fromFile)
-                System.out.println("Ai atins numarul maxim de notite");
         }
     }
     public List GetList()
@@ -120,7 +116,6 @@ public class Notite extends Meniu
             @Override
             public void actionPerformed(ActionEvent e) {
                 ReadFromFile.AuditSystem("Vizualizare Notite");
-                System.out.println("Ok");
                 UpdateString();
                 Renderer.ListBox(iSelected_index, myListBox, -1, -1, 400, 150, true, Color.black);
             }

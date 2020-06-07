@@ -63,15 +63,16 @@ public class Agenda extends Meniu
     }
     public void AddToMyAgenda(String name, String number, boolean IsFromFile) throws SQLException {
         if(iSelected_index == this.iMax_Index) {
-            if (!IsFromFile)
-                System.out.println("Nu mai puteti adauga in agenda!");
+            return;
+           // if (!IsFromFile)
+                //System.out.println("Nu mai puteti adauga in agenda!");
         }
         else
             {
                 for(int i = 0 ; i < iSelected_index; i++) {
                     if (this.number[i].equals(number) && this.nume[i].equals(name)) {
-                        if(!IsFromFile)
-                         System.out.println("Acest numar exista deja in agenda dumneavoastra!");
+                        //if(!IsFromFile)
+                         //System.out.println("Acest numar exista deja in agenda dumneavoastra!");
                         return;
                     }
                 }
@@ -82,7 +83,7 @@ public class Agenda extends Meniu
             {
                 ReadFromDB.InsertIntoTable(this,2);
                 //ReadFromFile.WriteFile(this,2);
-                System.out.print("Numarul a fost adaugat cu succes!\n");
+                //System.out.print("Numarul a fost adaugat cu succes!\n");
             }
         }
     }
@@ -177,7 +178,7 @@ public class Agenda extends Meniu
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    System.out.println("\n" + numele + " " + isRemoved);
+
                     isSelected[1] = false;
                 }
                 //Renderer.ListBox(0,currentListBox,-1,-1,400,150,true,Color.black);
